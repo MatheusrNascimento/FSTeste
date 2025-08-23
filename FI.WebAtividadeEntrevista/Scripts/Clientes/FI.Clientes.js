@@ -1,7 +1,6 @@
 ﻿
 $(document).ready(function () {
 
-
     $('#Cpf').mask('000.000.000-00', { reverse: true });
 
     $('#formCadastro').submit(function (e) {
@@ -37,10 +36,6 @@ $(document).ready(function () {
     })
     
 })
-
-function validateCPFInput() {
-    
-}
 
 function ModalDialog(titulo, texto) {
     var random = Math.random().toString().replace('.', '');

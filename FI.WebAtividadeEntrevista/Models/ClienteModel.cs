@@ -35,7 +35,7 @@ namespace WebAtividadeEntrevista.Models
         /// CPF
         /// </summary>
         [Required]
-        [MaxLength(11)]
+        [MaxLength(14)]
         public string CPF { get; set; }
 
         /// <summary>

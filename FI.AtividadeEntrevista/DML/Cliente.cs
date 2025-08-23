@@ -32,6 +32,11 @@ namespace FI.AtividadeEntrevista.DML
         public string Email { get; set; }
 
         /// <summary>
+        /// CPF
+        /// </summary>
+        public string CPF { get; set; }
+
+        /// <summary>
         /// Estado
         /// </summary>
         public string Estado { get; set; }
