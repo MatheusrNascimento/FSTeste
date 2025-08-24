@@ -27,7 +27,7 @@ namespace WebAtividadeEntrevista.Controllers
         {
             BoCliente bo = new BoCliente();
 
-            model.CPF.Replace(".", "").Replace("-", "").Trim();
+            string cpf = model.CPF.Replace(".", "").Replace("-", "").Trim();
             
             if (!this.ModelState.IsValid)
             {
@@ -45,7 +45,7 @@ namespace WebAtividadeEntrevista.Controllers
                 {                    
                     CEP = model.CEP,
                     Cidade = model.Cidade,
-                    CPF = model.CPF,
+                    CPF = cpf,
                     Email = model.Email,
                     Estado = model.Estado,
                     Logradouro = model.Logradouro,
@@ -64,7 +64,9 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Alterar(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
-       
+
+            string cpf = model.CPF.Replace(".", "").Replace("-", "").Trim();
+
             if (!this.ModelState.IsValid)
             {
                 List<string> erros = (from item in ModelState.Values
@@ -80,7 +82,7 @@ namespace WebAtividadeEntrevista.Controllers
                 {
                     Id = model.Id,
                     CEP = model.CEP,
-                    CPF = model.CPF,
+                    CPF = cpf,
                     Cidade = model.Cidade,
                     Email = model.Email,
                     Estado = model.Estado,
@@ -108,6 +110,7 @@ namespace WebAtividadeEntrevista.Controllers
                 {
                     Id = cliente.Id,
                     CEP = cliente.CEP,
+                    CPF = cliente.CPF,
                     Cidade = cliente.Cidade,
                     Email = cliente.Email,
                     Estado = cliente.Estado,
@@ -117,8 +120,6 @@ namespace WebAtividadeEntrevista.Controllers
                     Sobrenome = cliente.Sobrenome,
                     Telefone = cliente.Telefone
                 };
-
-            
             }
 
             return View(model);
