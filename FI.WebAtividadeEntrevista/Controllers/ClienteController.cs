@@ -34,10 +34,19 @@ namespace WebAtividadeEntrevista.Controllers
             if (!cpf.validarCPF())
                 ModelState.AddModelError("CPF", "CPF inválido");
 
-            foreach (Beneficiario benef in model.Beneficiarios)
+            if (boCliente.VerificarExistencia(cpf))
+                ModelState.AddModelError("CPF", "CPF já cadastrado");
+
+            if (model.Beneficiarios != null)
             {
-                if (!benef.CPF.validarCPF())
-                    ModelState.AddModelError("CPF", "CPF inválido");
+                foreach (Beneficiario benef in model.Beneficiarios)
+                {
+                    if (!benef.CPF.validarCPF())
+                        ModelState.AddModelError("CPF Beneficiário", "CPF inválido");
+
+                    if (boBeneficiario.VerificarExistencia(benef.CPF, model.Id))
+                        ModelState.AddModelError("CPF Beneficiário", "Já existe um beneficiário com o CPF informado cadastrado para esse cliente");
+                }
             }
 
             if (!this.ModelState.IsValid)
@@ -91,10 +100,13 @@ namespace WebAtividadeEntrevista.Controllers
             if (!cpf.validarCPF())
                 ModelState.AddModelError("CPF", "CPF inválido");
 
-            foreach(Beneficiario benef in model.Beneficiarios)
+            if (model.Beneficiarios != null)
             {
-                if (!benef.CPF.validarCPF())
-                    ModelState.AddModelError("CPF", "CPF do Beneficiário inválido");
+                foreach (Beneficiario benef in model.Beneficiarios)
+                {
+                    if (!benef.CPF.validarCPF())
+                        ModelState.AddModelError("CPF Beneficiário", "CPF do Beneficiário inválido");
+                }
             }
 
             if (!this.ModelState.IsValid)
@@ -123,12 +135,15 @@ namespace WebAtividadeEntrevista.Controllers
                     Telefone = model.Telefone
                 });
 
-                model.Beneficiarios.ForEach(b => boBeneficiario.Alterar(new Beneficiario()
+                if (model.Beneficiarios != null)
                 {
-                    Id = b.Id,
-                    Nome = b.Nome,
-                    CPF = b.CPF
-                }));
+                    model.Beneficiarios.ForEach(b => boBeneficiario.Alterar(new Beneficiario()
+                    {
+                        Id = b.Id,
+                        Nome = b.Nome,
+                        CPF = b.CPF
+                    }));
+                }
 
                 return Json("Cadastro alterado com sucesso");
             }

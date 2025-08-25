@@ -5,27 +5,27 @@ namespace FI.AtividadeEntrevista.BLL
     public class BoBeneficiario
     {
         /// <summary>
-        /// Inclui um novo cliente
+        /// Inclui um novo beneficiário
         /// </summary>
-        /// <param name="cliente">Objeto de cliente</param>
-        public long Incluir(DML.Beneficiario cliente)
+        /// <param name="beneficiario">Objeto de cliente</param>
+        public long Incluir(DML.Beneficiario beneficiario)
         {
             DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
-            return cli.Incluir(cliente);
+            return cli.Incluir(beneficiario);
         }
 
         /// <summary>
-        /// Altera um cliente
+        /// Altera um beneficiário
         /// </summary>
-        /// <param name="cliente">Objeto de cliente</param>
-        public void Alterar(DML.Beneficiario cliente)
+        /// <param name="beneficiario">Objeto de cliente</param>
+        public void Alterar(DML.Beneficiario beneficiario)
         {
             DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
-            cli.Alterar(cliente);
+            cli.Alterar(beneficiario);
         }
 
         /// <summary>
-        /// Consulta o cliente pelo id
+        /// Consulta o beneficiário pelo id
         /// </summary>
         /// <param name="id">id do cliente</param>
         /// <returns></returns>
@@ -35,6 +35,11 @@ namespace FI.AtividadeEntrevista.BLL
             return cli.Consultar(id);
         }
 
+        /// <summary>
+        /// Consulta o beneficiário pelo id do cliente
+        /// </summary>
+        /// <param name="id">id do cliente</param>
+        /// <returns></returns>
         public List<DML.Beneficiario> ConsultarPorCliente(long id)
         {
             DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
@@ -42,9 +47,9 @@ namespace FI.AtividadeEntrevista.BLL
         }
 
         /// <summary>
-        /// Excluir o cliente pelo id
+        /// Excluir o beneficiário pelo id
         /// </summary>
-        /// <param name="id">id do cliente</param>
+        /// <param name="id">id do beneficiário</param>
         /// <returns></returns>
         public void Excluir(long id)
         {
@@ -53,7 +58,7 @@ namespace FI.AtividadeEntrevista.BLL
         }
 
         /// <summary>
-        /// Lista os clientes
+        /// Lista os beneficiário
         /// </summary>
         public List<DML.Beneficiario> Listar()
         {
@@ -62,23 +67,15 @@ namespace FI.AtividadeEntrevista.BLL
         }
 
         /// <summary>
-        /// Lista os clientes
-        /// </summary>
-        public List<DML.Beneficiario> Pesquisa(int iniciarEm, int quantidade, string campoOrdenacao, bool crescente, out int qtd)
-        {
-            DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
-            return cli.Pesquisa(iniciarEm, quantidade, campoOrdenacao, crescente, out qtd);
-        }
-
-        /// <summary>
         /// VerificaExistencia
         /// </summary>
         /// <param name="CPF"></param>
+        /// <param name="idCliente"></param>
         /// <returns></returns>
-        public bool VerificarExistencia(string CPF)
+        public bool VerificarExistencia(string CPF, long idCliente)
         {
             DAL.DaoBeneficiario cli = new DAL.DaoBeneficiario();
-            return cli.VerificarExistencia(CPF);
+            return cli.VerificarExistencia(CPF, idCliente);
         }
     }
 }

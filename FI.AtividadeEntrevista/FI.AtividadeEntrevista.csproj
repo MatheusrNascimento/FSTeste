@@ -56,6 +56,8 @@
     <Content Include="DAL\Beneficiario\Procedures\FI.SP_ConsBeneficiarioPorIdCliente.sql" />
     <Content Include="DAL\Beneficiario\Procedures\FI.SP_DelBeneficiario.sql" />
     <Content Include="DAL\Beneficiario\Procedures\FI.SP_IncBeneficiario.sql" />
+    <Content Include="DAL\Beneficiario\Procedures\FI.SP_VerificaBeneficiario.sql" />
+    <Content Include="DAL\Clientes\Procedures\FI.SP_VerificaCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_AltCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_ConsCliente.sql" />
     <Content Include="DAL\Clientes\Procedures\FI_SP_DelCliente.sql" />

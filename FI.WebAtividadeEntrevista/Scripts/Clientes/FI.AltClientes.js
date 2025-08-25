@@ -18,23 +18,19 @@ $(document).ready(function () {
 
     $.each(obj.Beneficiarios, function (index, benef) {
 
-        const novoCpf = benef.CPF;
-
-        $('#Cpfbeneficiario').mask('000.000.000-00');
-
-        var tr = `
+        $('#beneficiariosTable tbody').append(`
                     <tr>
                     <td class="hidden-xs hidden">${benef.Id}</td>
-                    <td>${novoCpf}</td>
+                    <td class="cpf">${benef.CPF}</td>
                     <td>${benef.Nome}</td>
                     <td class="text-center">
                         <button type="button" class="btn btn-sm btn-primary btnAlterarBeneficiario" style="margin-right: 0.4rem">Alterar</button>
                         <button type="button" class="btn btn-sm btn-primary btnExcluirBeneficiario">Excluir</button>
                     </td>
                 </tr>
-                `;
+                `);
 
-        $('#beneficiariosTable tbody').append(tr);
+        $('.cpf').mask('000.000.000-00');
     });
 
     $('#formCadastro').submit(function (e) {
