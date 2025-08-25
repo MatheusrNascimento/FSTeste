@@ -112,7 +112,7 @@ function Modalbeneficiarios() {
                 .replace(/(\d{3})(\d{1,2})$/, '$1-$2') }</td>
                 <td>${nome}</td>
                 <td class="text-right">
-                    <button type="button" class="btn btn-sm btn-primary btnAlterarBeneficiario me-2">Alterar</button>
+                    <button type="button" class="btn btn-sm btn-primary btnAlterarBeneficiario">Alterar</button>
                     <button type="button" class="btn btn-sm btn-primary btnExcluirBeneficiario">Excluir</button>
                 </td>
             </tr>
@@ -127,16 +127,30 @@ function Modalbeneficiarios() {
         const id = Number($linha.find('td:eq(0)').text());
 
         if (id > 0) {
-            if (!confirm("Deseja realmente excluir este beneficiário?")) return;
+            if (!confirm("Tem certeza que deseja excluir o beneficiário ?")) return;
 
-            $.post('/Cliente/DeletarBeneficiario', { id })
-                .done(response => {
-                    $linha.remove();
-                    ModalDialog("Sucesso", response);
-                })
-                .fail(error => {
-                    ModalDialog("Erro", error.responseJSON);
-                });
+            $.ajax({
+                url: '/Cliente/ExcluirBeneficiario',
+                method: "POST",
+                data: { "Id": id },
+                error:
+                    function (r) {
+                        if (r.Result === 400)
+                            ModalDialog("Ocorreu um erro", "Tente novamento mais tarde!");
+                        else if (r.status == 500)
+                            ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
+                    },
+                success:
+                    function (r) {
+                        if (r.Result === "OK") {
+                            ModalDialog("Sucesso!", r.Message);
+                            $linha.remove();
+                        }
+                        else {
+                            ModalDialog("Error!", r.Message);
+                        }
+                    }
+            });
         } else {
             $linha.remove();
         }

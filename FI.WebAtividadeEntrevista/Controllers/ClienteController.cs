@@ -167,6 +167,23 @@ namespace WebAtividadeEntrevista.Controllers
         }
 
         [HttpPost]
+        public ActionResult ExcluirBeneficiario(long IdBeneficiario)
+        {
+            try
+            {
+                BoBeneficiario boBeneficiario = new BoBeneficiario();
+
+                boBeneficiario.Excluir(IdBeneficiario);
+
+                return Json(new { Result = "OK", Message = "Beneficiário excluido com sucesso!" });
+            }
+            catch (Exception)
+            {
+                return Json(new { Result = "Error", Message = "Não foi possivel excluir o beneficiário no momento" });
+            }
+        }
+
+        [HttpPost]
         public JsonResult ClienteList(int jtStartIndex = 0, int jtPageSize = 0, string jtSorting = null)
         {
             try

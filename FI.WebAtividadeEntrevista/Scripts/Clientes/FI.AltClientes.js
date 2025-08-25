@@ -145,7 +145,7 @@ function Modalbeneficiarios() {
                 .replace(/(\d{3})(\d{1,2})$/, '$1-$2')}</td>
                 <td>${nome}</td>
                 <td class="text-right">
-                    <button type="button" class="btn btn-sm btn-primary btnAlterarBeneficiario me-2">Alterar</button>
+                    <button type="button" class="btn btn-sm btn-primary btnAlterarBeneficiario">Alterar</button>
                     <button type="button" class="btn btn-sm btn-primary btnExcluirBeneficiario">Excluir</button>
                 </td>
             </tr>
@@ -162,14 +162,28 @@ function Modalbeneficiarios() {
         if (id > 0) {
             if (!confirm("Deseja realmente excluir este beneficiário?")) return;
 
-            $.post('/Cliente/DeletarBeneficiario', { id })
-                .done(response => {
-                    $linha.remove();
-                    ModalDialog("Sucesso", response);
-                })
-                .fail(error => {
-                    ModalDialog("Erro", error.responseJSON);
-                });
+            $.ajax({
+                url: '/Cliente/ExcluirBeneficiario',
+                method: "POST",
+                data: { "IdBeneficiario": id },
+                error:
+                    function (r) {
+                        if (r.Result === 400)
+                            ModalDialog("Ocorreu um erro", "Tente novamento mais tarde!");
+                        else if (r.status == 500)
+                            ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
+                    },
+                success:
+                    function (r) {
+                        if (r.Result === "OK") {
+                            ModalDialog("Sucesso!", r.Message);
+                            $linha.remove();
+                        }
+                        else {
+                            ModalDialog("Error!", r.Message);
+                        }
+                    }
+            });
         } else {
             $linha.remove();
         }
@@ -199,21 +213,4 @@ function Modalbeneficiarios() {
             $linha.addClass('em-edicao');
         }
     });
-
-    function pegarBeneficiarios() {
-
-        let beneficiarios = [];
-
-        $('#listaBeneficiarios tbody tr').each(function () {
-            var beneficiario = {
-                Id: $(this).find('td:eq(0)').text().trim(),
-                CPF: $(this).find('td:eq(1)').text().trim(),
-                Nome: $(this).find('td:eq(2)').text().trim()
-            };
-
-            beneficiarios.push(beneficiario);
-        });
-
-        return beneficiarios;
-    }
 }
