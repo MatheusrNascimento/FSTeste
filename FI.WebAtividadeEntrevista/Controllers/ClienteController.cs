@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FI.AtividadeEntrevista.DML;
+using FI.WebAtividadeEntrevista.Utils;
 
 namespace WebAtividadeEntrevista.Controllers
 {
@@ -25,10 +26,20 @@ namespace WebAtividadeEntrevista.Controllers
         [HttpPost]
         public JsonResult Incluir(ClienteModel model)
         {
-            BoCliente bo = new BoCliente();
+            BoCliente boCliente = new BoCliente();
+            BoBeneficiario boBeneficiario = new BoBeneficiario();
 
             string cpf = model.CPF.Replace(".", "").Replace("-", "").Trim();
-            
+
+            if (!cpf.validarCPF())
+                ModelState.AddModelError("CPF", "CPF inválido");
+
+            foreach (Beneficiario benef in model.Beneficiarios)
+            {
+                if (!benef.CPF.validarCPF())
+                    ModelState.AddModelError("CPF", "CPF inválido");
+            }
+
             if (!this.ModelState.IsValid)
             {
                 List<string> erros = (from item in ModelState.Values
@@ -40,8 +51,8 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-                
-                model.Id = bo.Incluir(new Cliente()
+
+                model.Id = boCliente.Incluir(new Cliente()
                 {                    
                     CEP = model.CEP,
                     Cidade = model.Cidade,
@@ -52,9 +63,18 @@ namespace WebAtividadeEntrevista.Controllers
                     Nacionalidade = model.Nacionalidade,
                     Nome = model.Nome,
                     Sobrenome = model.Sobrenome,
-                    Telefone = model.Telefone
+                    Telefone = model.Telefone,
                 });
 
+                foreach (Beneficiario benef in model.Beneficiarios)
+                {
+                    boBeneficiario.Incluir(new Beneficiario()
+                    {
+                        Nome = benef.Nome,
+                        CPF = benef.CPF,
+                        IdCliente = model.Id
+                    });
+                }
            
                 return Json("Cadastro efetuado com sucesso");
             }
@@ -64,8 +84,18 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Alterar(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
+            BoBeneficiario boBeneficiario = new BoBeneficiario();
 
             string cpf = model.CPF.Replace(".", "").Replace("-", "").Trim();
+
+            if (!cpf.validarCPF())
+                ModelState.AddModelError("CPF", "CPF inválido");
+
+            foreach(Beneficiario benef in model.Beneficiarios)
+            {
+                if (!benef.CPF.validarCPF())
+                    ModelState.AddModelError("CPF", "CPF do Beneficiário inválido");
+            }
 
             if (!this.ModelState.IsValid)
             {
@@ -92,7 +122,14 @@ namespace WebAtividadeEntrevista.Controllers
                     Sobrenome = model.Sobrenome,
                     Telefone = model.Telefone
                 });
-                               
+
+                model.Beneficiarios.ForEach(b => boBeneficiario.Alterar(new Beneficiario()
+                {
+                    Id = b.Id,
+                    Nome = b.Nome,
+                    CPF = b.CPF
+                }));
+
                 return Json("Cadastro alterado com sucesso");
             }
         }
@@ -100,9 +137,12 @@ namespace WebAtividadeEntrevista.Controllers
         [HttpGet]
         public ActionResult Alterar(long id)
         {
-            BoCliente bo = new BoCliente();
-            Cliente cliente = bo.Consultar(id);
-            Models.ClienteModel model = null;
+            ClienteModel model = new ClienteModel();
+            BoCliente boCliente = new BoCliente();
+            Cliente cliente = boCliente.Consultar(id);
+
+            BoBeneficiario boBeneficiario = new BoBeneficiario();
+            List<Beneficiario> beneficiarios = boBeneficiario.ConsultarPorCliente(cliente.Id);
 
             if (cliente != null)
             {
@@ -118,7 +158,8 @@ namespace WebAtividadeEntrevista.Controllers
                     Nacionalidade = cliente.Nacionalidade,
                     Nome = cliente.Nome,
                     Sobrenome = cliente.Sobrenome,
-                    Telefone = cliente.Telefone
+                    Telefone = cliente.Telefone,
+                    Beneficiarios = beneficiarios
                 };
             }
 

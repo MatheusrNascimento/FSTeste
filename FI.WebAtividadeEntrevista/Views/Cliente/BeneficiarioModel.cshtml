@@ -1,13 +1,47 @@
-﻿
-@{
-    ViewBag.Title = "Adicionar Beneficiário";
-}
-@section scripts{
-    <script>
-    var urlAlteracao = '@Url.Action("Alterar", "Cliente", new { area = "" })';
-    var urlClienteList = '@Url.Action("ClienteList", "Cliente", new { area = "" })';
+﻿<div class="modal fade" id="modalBeneficiarios" tabindex="-1" role="dialog" aria-labelledby="beneficiariosLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
 
-    </script>
-    @Scripts.Render("~/bundles/listClientes")
-}
-<h2>@Html.Raw(ViewBag.Title)</h2>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title">Beneficiários</h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="row" style="display: flex; align-items: flex-end;">
+                    <div class="col-lg-5">
+                        <label for="Cpfbeneficiario" class="mr-2">CPF:</label>
+                        <input type="text" class="form-control" id="Cpfbeneficiario" placeholder="Ex.: 123.456.789-10" maxlength="14" />
+                    </div>
+                    <div class="col-lg-5">
+                        <label for="Nome" class="mr-2">Nome:</label>
+                        <input type="text" class="form-control" id="NomeBenefiario" placeholder="Ex.: Maria" />
+                    </div>
+
+                    <div class="col-lg-2">
+                        <button type="button" class="btn btn-success" id="btnIncluirBeneficiario">Incluir</button>
+                    </div>
+                </div>
+
+                <table class="table table-striped" id="beneficiariosTable">
+                    <thead>
+                        <tr>
+                            <th class="text-center"></th>
+                            <th class="text-left">CPF</th>
+                            <th class="text-left">Nome</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
