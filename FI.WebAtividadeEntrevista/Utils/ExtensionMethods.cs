@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FI.WebAtividadeEntrevista.Utils
 {
-    public static class ExtencionsMethods
+    public static class ExtensionMethods
     {
         public static bool validarCPF(this string cpf)
         {
